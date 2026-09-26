@@ -1,3 +1,24 @@
+import i18n from "../i18n";
+
+const locales = {
+  en: "en-CA",
+  uk: "uk-UA",
+  ru: "ru-RU",
+  es: "es-ES",
+};
+
+export const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleString(
+    locales[i18n.language as keyof typeof locales] ?? "en-CA",
+    {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    },
+  );
+};
+
 export const getFormattedLocalDateTime = (dateStr: string) => {
   const date = new Date(dateStr);
 

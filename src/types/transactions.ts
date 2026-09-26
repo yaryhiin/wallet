@@ -27,3 +27,13 @@ export type TransactionDB = {
   date: string;
   created_at: string;
 };
+
+export type Range = {
+  from: number;
+  to: number;
+};
+
+export type SortConfig = {
+  key: keyof TransactionDB;
+  direction: string;
+};

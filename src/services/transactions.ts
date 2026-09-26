@@ -1,12 +1,17 @@
 import { supabase } from "../supabase";
-import type { TransactionDB, TransactionToPaste } from "../types/transactions";
+import type {
+  TransactionDB,
+  TransactionToPaste,
+  Range,
+} from "../types/transactions";
 import { getCurrentUserId } from "./auth";
 
-export async function getTransactions(): Promise<TransactionDB[]> {
+export async function getTransactions(range: Range): Promise<TransactionDB[]> {
   const { data, error } = await supabase
     .from("transactions")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .range(range.from, range.to);
 
   if (error) {
     console.error("Error fetching transactions:", error);

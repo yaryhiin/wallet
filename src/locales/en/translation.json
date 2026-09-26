@@ -93,7 +93,7 @@
     "addTrans": "Add Transaction",
     "changeTrans": "Change Transaction",
     "all": "All Transaction",
-    "viewAll": "View All Transactions",
+    "viewAll": "View All",
     "addNewCategory": {
       "title": "Add New Category",
       "placeHolder": "Category name"

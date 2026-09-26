@@ -61,7 +61,7 @@ const TransactionForm = ({
           <p className="">{t("transaction.type.title")}</p>
           <select
             value={transaction.type}
-            className="border-[var(--input-border)] border max-w-45"
+            className="border-[var(--input-border)] border w-45"
             required
             onChange={(e) =>
               setTransaction((prev) => ({
@@ -133,7 +133,7 @@ const TransactionForm = ({
             }))
           }
         >
-          <option value="" disabled>
+          <option value="" className="text-[var(--text-muted)]" disabled>
             {t("transaction.selectMethod")}
           </option>
           {accounts &&
@@ -148,7 +148,7 @@ const TransactionForm = ({
         <p className="">{t("transaction.date")}</p>
         <input
           value={transaction.date}
-          className={`${errors.date ? "border-[var(--error-border)]" : "border-[var(--border)]"} border max-w-45`}
+          className={`${errors.date ? "border-[var(--error-border)]" : "border-[var(--border)]"} border w-45`}
           type="datetime-local"
           required
           onChange={(e) => {

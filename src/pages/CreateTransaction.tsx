@@ -140,7 +140,7 @@ const CreateTransaction = ({ type }: CreateTransactionType) => {
 
   return (
     <div className="flex flex-col items-center p-5">
-      <h1 className="text-2xl font-bold mb-10">{t("transaction.addTrans")}</h1>
+      <h1 className="text-2xl font-bold mb-10">{t(`transaction.type.${type}`)}</h1>
       <TransactionForm
         pageType="create"
         transaction={transaction}

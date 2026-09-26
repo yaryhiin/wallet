@@ -28,7 +28,7 @@ export default function Layout({
           setLanguage={setLanguage}
         />
 
-        <main className="mb-15">
+        <main className="mb-15 w-full flex flex-col items-center p-4">
           <Outlet />
         </main>
         <Footer />
