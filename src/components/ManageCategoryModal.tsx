@@ -6,34 +6,35 @@ import type { CategoryErrors } from "../types/errors";
 
 import { checkCategory } from "../utils/checkData";
 
-type AddNewCategoryModalProps = {
+type ManageCategoryModalProps = {
+  category?: Category;
   onClose: () => void;
   onAddCategory: (newCategory: Category) => void;
 };
 
-const AddNewCategoryModal = ({
+const ManageCategoryModal = ({
+  category,
   onClose,
   onAddCategory,
-}: AddNewCategoryModalProps) => {
+}: ManageCategoryModalProps) => {
   const { t } = useTranslation();
-  const [newCategory, setNewCategory] = useState<Category>({
-    name: "",
-    type: "",
-  });
+  const [newCategory, setNewCategory] = useState<Category>(
+    category ?? {
+      name: "",
+      type: "",
+    },
+  );
   const [errors, setErrors] = useState<CategoryErrors>({
     name: false,
     type: false,
   });
 
   function handleSubmit() {
-    console.log("Test 1");
     const newErrors = checkCategory(newCategory);
-    console.log(newErrors);
     if (Object.values(newErrors).some(Boolean)) {
       setErrors(newErrors);
       return;
     }
-    console.log("Test 2");
 
     onAddCategory(newCategory);
   }
@@ -89,4 +90,4 @@ const AddNewCategoryModal = ({
   );
 };
 
-export default AddNewCategoryModal;
+export default ManageCategoryModal;

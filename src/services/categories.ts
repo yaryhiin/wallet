@@ -33,7 +33,7 @@ export async function createCategory(category: Category): Promise<CategoryDB> {
   return data;
 }
 
-export async function updatecategory(
+export async function updateCategory(
   category: Category,
   categoryId: string,
 ): Promise<CategoryDB> {
@@ -55,7 +55,7 @@ export async function updatecategory(
   return data;
 }
 
-export async function deletecategory(categoryId: string): Promise<boolean> {
+export async function deleteCategory(categoryId: string): Promise<boolean> {
   const userId = await getCurrentUserId();
 
   const { error } = await supabase
