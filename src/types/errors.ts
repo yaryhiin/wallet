@@ -22,3 +22,11 @@ export type CategoryErrors = {
   name: boolean;
   type: boolean;
 };
+
+export type TransferErrors = {
+  amount: boolean;
+  fromId: boolean;
+  toId: boolean;
+  exchangeRate: boolean;
+  date: boolean;
+};

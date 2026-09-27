@@ -58,7 +58,7 @@ const TransactionForm = ({
     <div className="flex flex-col items-center gap-4">
       {pageType === "edit" && (
         <div>
-          <p className="">{t("transaction.type.title")}</p>
+          <p>{t("transaction.type.title")}</p>
           <select
             value={transaction.type}
             className="border-[var(--input-border)] border w-45"
@@ -76,7 +76,7 @@ const TransactionForm = ({
         </div>
       )}
       <div>
-        <p className="">{t("transaction.amount.title")}</p>
+        <p>{t("transaction.amount.title")}</p>
         <input
           type="number"
           value={!transaction.amount ? "" : transaction.amount}
@@ -90,7 +90,7 @@ const TransactionForm = ({
       </div>
 
       <div>
-        <p className="">{t("transaction.category")}</p>
+        <p>{t("transaction.category")}</p>
         <select
           className={`${errors.category ? "border-[var(--error-border)]" : "border-[var(--border)]"} border max-w-45`}
           value={transaction.category}
@@ -118,7 +118,7 @@ const TransactionForm = ({
         </select>
       </div>
       <div>
-        <p className="">{t("account.icon")}</p>
+        <p>{t("transaction.method")}</p>
         <select
           className={`${errors.account_id ? "border-[var(--error-border)]" : "border-[var(--border)]"} border w-45`}
           value={transaction.account_id}
@@ -145,7 +145,7 @@ const TransactionForm = ({
         </select>
       </div>
       <div>
-        <p className="">{t("transaction.date")}</p>
+        <p>{t("transaction.date")}</p>
         <input
           value={transaction.date}
           className={`${errors.date ? "border-[var(--error-border)]" : "border-[var(--border)]"} border w-45`}

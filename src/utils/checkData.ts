@@ -4,8 +4,13 @@ import type {
   TransactionErrors,
   AccountErrors,
   CategoryErrors,
+  TransferErrors,
 } from "../types/errors";
-import type { Transaction, TransactionToPaste } from "../types/transactions";
+import type {
+  Transaction,
+  TransactionToPaste,
+  Transfer,
+} from "../types/transactions";
 
 export function checkTransaction(transaction: Transaction) {
   const newErrors: TransactionErrors = {
@@ -68,4 +73,31 @@ export function checkCategory(category: Category) {
   }
 
   return newErrors;
+}
+
+export function checkTransfer(transfer: Transfer): {
+  newErrors: TransferErrors;
+  numericRate: number;
+} {
+  const newErrors: TransferErrors = {
+    amount: false,
+    fromId: false,
+    toId: false,
+    exchangeRate: false,
+    date: false,
+  };
+  const numericAmount = transfer.amount === "" ? 0 : Number(transfer.amount);
+  const numericRate =
+    transfer.exchangeRate === "" ? 0 : Number(transfer.exchangeRate);
+  if (!numericAmount || numericAmount <= 0) newErrors.amount = true;
+  if (!numericRate) newErrors.exchangeRate = true;
+  if (!transfer.fromId) newErrors.fromId = true;
+  if (!transfer.toId) newErrors.toId = true;
+  if (!transfer.date) newErrors.date = true;
+  if (transfer.fromId === transfer.toId) {
+    newErrors.toId = true;
+    newErrors.fromId = true;
+  }
+
+  return { newErrors, numericRate };
 }

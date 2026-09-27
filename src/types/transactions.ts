@@ -28,6 +28,15 @@ export type TransactionDB = {
   created_at: string;
 };
 
+export type Transfer = {
+  amount: string;
+  exchangeRate: string;
+  fromId: string;
+  toId: string;
+  date: string;
+  isFlipped: boolean;
+};
+
 export type Range = {
   from: number;
   to: number;

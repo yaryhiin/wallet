@@ -114,7 +114,8 @@
       "title": "Type",
       "income": "Income",
       "expense": "Expense",
-      "select": "Select Type"
+      "select": "Select Type",
+      "transfer": "Transfer"
     },
     "category": "Category",
     "selectCategory": "Select Category",

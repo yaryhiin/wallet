@@ -9,7 +9,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import type { AccountErrors } from "../types/errors";
 import type { Account, Currency } from "../types/accounts";
 
-import { fetchCurrencies } from "../utils/currencies";
+import { fetchCurrencies } from "../services/currencies";
 import { getPersistedJSON, setPersistedJSON } from "../utils/storage";
 import { checkAccount } from "../utils/checkData";
 import { createAccount } from "../services/accounts";

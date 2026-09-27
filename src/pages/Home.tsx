@@ -143,6 +143,13 @@ const Home = () => {
         >
           - {t("transaction.type.expense")}
         </Link>
+        <Link
+          to="/transaction/new/transfer"
+          aria-label="Create new transfer"
+          className="border border-[var(--transfer-btn-bg)] bg-[var(--back-btn-bg)] rounded-lg px-4 py-3"
+        >
+          ⇄ {t("transaction.type.transfer")}
+        </Link>
       </div>
     </div>
   );

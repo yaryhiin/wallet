@@ -18,7 +18,7 @@ import {
   updateAccount,
 } from "../services/accounts";
 import { getPersistedJSON, setPersistedJSON } from "../utils/storage";
-import { fetchCurrencies } from "../utils/currencies";
+import { fetchCurrencies } from "../services/currencies";
 import { checkAccount } from "../utils/checkData";
 
 const EditAccount = () => {

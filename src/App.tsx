@@ -20,6 +20,7 @@ const EditAccount = lazy(() => import("./pages/EditAccount"));
 const CreateTransaction = lazy(() => import("./pages/CreateTransaction"));
 const EditTransaction = lazy(() => import("./pages/EditTransaction"));
 const History = lazy(() => import("./pages/History"));
+const Transfer = lazy(() => import("./pages/Transfer"));
 
 function App() {
   const { i18n } = useTranslation();
@@ -136,6 +137,10 @@ function App() {
                 <Route
                   path="/transaction/edit/:transactionId"
                   element={<EditTransaction />}
+                />
+                <Route
+                  path="/transaction/new/transfer"
+                  element={<Transfer />}
                 />
 
                 <Route path="/history" element={<History />} />
