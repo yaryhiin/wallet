@@ -1,33 +1,35 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "@tanstack/react-query";
 
-import type { AccountDB } from "../types/accounts";
 import type { TransactionToPaste, Transfer } from "../types/transactions";
 import type { TransferErrors } from "../types/errors";
 
 import InfoModal from "../components/InfoModal";
 import LoadingScreen from "../components/LoadingScreen";
 
-import { fetchRate } from "../services/currencies";
-import { getAccounts, updateAccount } from "../services/accounts";
-import { createTransaction } from "../services/transactions";
-
 import { getPersistedJSON } from "../utils/storage";
 import { checkTransfer } from "../utils/checkData";
 import { getFormattedLocalDateTime } from "../utils/utils";
 
+import { fetchRate } from "../services/currencies";
+import { updateAccount } from "../services/accounts";
+import { createTransaction } from "../services/transactions";
+
 import { useAsyncAction } from "../hooks/useAsyncAction";
+import { useAccounts } from "../hooks/useAccounts";
 
 const Transfer = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { state, run } = useAsyncAction();
+  const queryClient = useQueryClient();
+
+  const { data: accounts = null, isLoading: loadingAccounts } = useAccounts();
 
   const [fromCurrency, setFromCurrency] = useState("");
   const [toCurrency, setToCurrency] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [accounts, setAccounts] = useState<AccountDB[] | null>(null);
   const [transfer, setTransfer] = useState<Transfer>(
     getPersistedJSON("transfer", {
       amount: "",
@@ -47,25 +49,14 @@ const Transfer = () => {
   });
 
   useEffect(() => {
-    async function loadAccounts() {
-      setLoading(true);
-      try {
-        const accountsData = await getAccounts();
-        if (accountsData) setAccounts(accountsData);
-        setTransfer((prev) => ({
-          ...prev,
-          fromId: accountsData[0].id,
-          toId: accountsData[0].id,
-        }));
-      } catch (error) {
-        console.error("Error fetching accounts", error);
-      } finally {
-        setLoading(false);
-      }
-    }
+    if (!accounts || (transfer.fromId && transfer.toId)) return;
 
-    loadAccounts();
-  }, []);
+    setTransfer((prev) => ({
+      ...prev,
+      fromId: accounts[0].id,
+      toId: accounts[0].id,
+    }));
+  }, [accounts, transfer.fromId, transfer.toId]);
 
   useEffect(() => {
     if (transfer) localStorage.setItem("transfer", JSON.stringify(transfer));
@@ -91,10 +82,12 @@ const Transfer = () => {
   useEffect(() => {
     if (!accounts || !transfer.fromId || !transfer.toId) return;
     setFromCurrency(
-      accounts.find((acc) => acc.id === transfer.fromId)?.currency ?? "",
+      accounts.find((acc) => acc.id === transfer.fromId)?.currency ??
+        accounts[0].id,
     );
     setToCurrency(
-      accounts.find((acc) => acc.id === transfer.toId)?.currency ?? "",
+      accounts.find((acc) => acc.id === transfer.toId)?.currency ??
+        accounts[0].id,
     );
   }, [transfer.fromId, transfer.toId, accounts]);
 
@@ -155,6 +148,9 @@ const Transfer = () => {
         },
         changedAccountTo.id,
       );
+      await queryClient.invalidateQueries({
+        queryKey: ["accounts"],
+      });
     });
     if (success) {
       setTimeout(() => {
@@ -181,7 +177,7 @@ const Transfer = () => {
     setToCurrency(newTo);
   }
 
-  if (loading) return <LoadingScreen />;
+  if (loadingAccounts) return <LoadingScreen />;
 
   return (
     <div className="flex flex-col items-center p-5">

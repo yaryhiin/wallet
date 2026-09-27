@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "@tanstack/react-query";
 
 import TransactionForm from "../components/TransactionForm";
 import InfoModal from "../components/InfoModal";
@@ -9,40 +10,35 @@ import ExecuteModal from "../components/ExecuteModal";
 
 import type { TransactionErrors } from "../types/errors";
 import type { TransactionDB, Transaction } from "../types/transactions";
-import type {
-  // Category,
-  CategoryDB,
-} from "../types/categories";
-import type { AccountDB } from "../types/accounts";
+import type { CategoryDB } from "../types/categories";
 
 import { getPersistedJSON, setPersistedJSON } from "../utils/storage";
 import { checkTransaction } from "../utils/checkData";
+
 import {
   deleteTransaction,
   getTransactionById,
   updateTransaction,
-  // deleteTransaction,
 } from "../services/transactions";
-import {
-  // createCategory,
-  getCategories,
-} from "../services/categories";
+import { getCategories } from "../services/categories";
+import { updateAccount } from "../services/accounts";
 
 import { useAsyncAction } from "../hooks/useAsyncAction";
-import { getAccounts, updateAccount } from "../services/accounts";
-
+import { useAccounts } from "../hooks/useAccounts";
 const EditTransaction = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { run, state } = useAsyncAction();
   const { transactionId } = useParams();
+  const queryClient = useQueryClient();
+
+  const { data: accounts = null, isLoading: loadingAccounts } = useAccounts();
 
   const transactionKey = `transaction-${transactionId}`;
   const initialTransactionKey = `initialTransaction-${transactionId}`;
 
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<CategoryDB[] | null>(null);
-  const [accounts, setAccounts] = useState<AccountDB[] | null>(null);
   const [transaction, setTransaction] = useState<Transaction>(
     getPersistedJSON(transactionKey, {
       account_id: "",
@@ -124,19 +120,6 @@ const EditTransaction = () => {
   }, []);
 
   useEffect(() => {
-    async function loadAccounts() {
-      try {
-        const accountsData = await getAccounts();
-        if (accountsData) setAccounts(accountsData);
-      } catch (error) {
-        console.error("Error fetching accounts", error);
-      }
-    }
-
-    loadAccounts();
-  }, []);
-
-  useEffect(() => {
     if (loading || !transaction) return;
     setPersistedJSON(transactionKey, transaction);
   }, [transaction, transactionKey, loading]);
@@ -196,6 +179,9 @@ const EditTransaction = () => {
         transactionId,
       );
       if (!newTransaction) return;
+      await queryClient.invalidateQueries({
+        queryKey: ["accounts"],
+      });
     });
     if (success) {
       setTimeout(() => {
@@ -226,6 +212,9 @@ const EditTransaction = () => {
         changedAccount.id,
       );
       await deleteTransaction(transactionId);
+      await queryClient.invalidateQueries({
+        queryKey: ["accounts"],
+      });
     });
     if (success) {
       setTimeout(() => {
@@ -242,7 +231,7 @@ const EditTransaction = () => {
     localStorage.removeItem(initialTransactionKey);
   }
 
-  if (loading) return <LoadingScreen />;
+  if (loading || loadingAccounts) return <LoadingScreen />;
 
   return (
     <div className="flex flex-col items-center p-5">

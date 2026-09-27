@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import type { Session, Subscription } from "@supabase/supabase-js";
 import { useTranslation } from "react-i18next";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import Layout from "./components/Layout";
 import LoadingScreen from "./components/LoadingScreen";
@@ -24,6 +25,8 @@ const Transfer = lazy(() => import("./pages/Transfer"));
 
 function App() {
   const { i18n } = useTranslation();
+  const queryClient = new QueryClient();
+
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem("theme");
     if (saved) return saved;
@@ -88,67 +91,69 @@ function App() {
   if (authLoading) return <LoadingScreen />;
   return (
     <>
-      <Router>
-        <Suspense fallback={<LoadingScreen />}>
-          <Routes>
-            {!session ? (
-              <Route
-                element={
-                  <Layout
-                    toggleTheme={toggleTheme}
-                    theme={theme}
-                    language={language}
-                    setLanguage={setLanguage}
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <Suspense fallback={<LoadingScreen />}>
+            <Routes>
+              {!session ? (
+                <Route
+                  element={
+                    <Layout
+                      toggleTheme={toggleTheme}
+                      theme={theme}
+                      language={language}
+                      setLanguage={setLanguage}
+                    />
+                  }
+                >
+                  <Route path="/" element={<WelcomeScreen />} />
+
+                  <Route path="/signup" element={<SignUp />} />
+
+                  <Route path="/login" element={<Login />} />
+
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Route>
+              ) : (
+                <Route
+                  element={
+                    <Layout
+                      toggleTheme={toggleTheme}
+                      theme={theme}
+                      language={language}
+                      setLanguage={setLanguage}
+                    />
+                  }
+                >
+                  <Route path="/" element={<Home />} />
+
+                  <Route path="/account/new" element={<CreateAccount />} />
+                  <Route path="/account/:accountId" element={<EditAccount />} />
+
+                  <Route
+                    path="/transaction/new/income"
+                    element={<CreateTransaction type="income" />}
                   />
-                }
-              >
-                <Route path="/" element={<WelcomeScreen />} />
-
-                <Route path="/signup" element={<SignUp />} />
-
-                <Route path="/login" element={<Login />} />
-
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Route>
-            ) : (
-              <Route
-                element={
-                  <Layout
-                    toggleTheme={toggleTheme}
-                    theme={theme}
-                    language={language}
-                    setLanguage={setLanguage}
+                  <Route
+                    path="/transaction/new/expense"
+                    element={<CreateTransaction type="expense" />}
                   />
-                }
-              >
-                <Route path="/" element={<Home />} />
+                  <Route
+                    path="/transaction/edit/:transactionId"
+                    element={<EditTransaction />}
+                  />
+                  <Route
+                    path="/transaction/new/transfer"
+                    element={<Transfer />}
+                  />
 
-                <Route path="/account/new" element={<CreateAccount />} />
-                <Route path="/account/:accountId" element={<EditAccount />} />
-
-                <Route
-                  path="/transaction/new/income"
-                  element={<CreateTransaction type="income" />}
-                />
-                <Route
-                  path="/transaction/new/expense"
-                  element={<CreateTransaction type="expense" />}
-                />
-                <Route
-                  path="/transaction/edit/:transactionId"
-                  element={<EditTransaction />}
-                />
-                <Route
-                  path="/transaction/new/transfer"
-                  element={<Transfer />}
-                />
-
-                <Route path="/history" element={<History />} />
-              </Route>
-            )}
-          </Routes>
-        </Suspense>
-      </Router>
+                  <Route path="/history" element={<History />} />
+                </Route>
+              )}
+            </Routes>
+          </Suspense>
+        </Router>
+      </QueryClientProvider>
     </>
   );
 }

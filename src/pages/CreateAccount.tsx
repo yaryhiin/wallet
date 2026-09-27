@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "@tanstack/react-query";
 
 import AccountForm from "../components/AccountForm";
 import InfoModal from "../components/InfoModal";
@@ -20,6 +21,7 @@ const CreateAccount = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { run, state } = useAsyncAction();
+  const queryClient = useQueryClient();
 
   const [loading, setLoading] = useState(true);
   const [currencies, setCurrencies] = useState<Currency[] | null>(null);
@@ -67,6 +69,9 @@ const CreateAccount = () => {
 
     const success = await run("saving", async () => {
       await createAccount(formattedAccount);
+      await queryClient.invalidateQueries({
+        queryKey: ["accounts"],
+      });
     });
     if (success) {
       setTimeout(() => {

@@ -4,24 +4,25 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 
 import type { TransactionDB, Range, SortConfig } from "../types/transactions";
-import type { AccountDB } from "../types/accounts";
 
 import LoadingScreen from "../components/LoadingScreen";
 
 import { formatDate } from "../utils/utils";
-import { getAccounts } from "../services/accounts";
+
 import { getTransactions } from "../services/transactions";
+
+import { useAccounts } from "../hooks/useAccounts";
 
 const step = 10;
 
 const History = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { data: accounts = null, isLoading: loadingAccounts } = useAccounts();
 
   const [transactions, setTransactions] = useState<TransactionDB[] | null>(
     null,
   );
-  const [accounts, setAccounts] = useState<AccountDB[] | null>(null);
   const [range, setRange] = useState<Range>({ from: 0, to: 10 });
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: "date",
@@ -29,41 +30,23 @@ const History = () => {
   });
   const [hasMore, setHasMore] = useState(false);
   const arrow = sortConfig.direction === "asc" ? "▴" : "▾";
-  const [loadingAccounts, setLoadingAccounts] = useState(true);
   const [loadingTransactions, setLoadingTransactions] = useState(true);
 
   useEffect(() => {
-    async function loadAccounts() {
-      setLoadingAccounts(true);
-      try {
-        const accountsData = await getAccounts();
-        if (accountsData) setAccounts(accountsData);
-      } catch (error) {
-        console.error("Error fetching accounts", error);
-      } finally {
-        setLoadingAccounts(false);
-      }
-    }
-
-    loadAccounts();
-  }, []);
-
-  useEffect(() => {
     async function loadInitialTransactions() {
-    setLoadingTransactions(true);
-    try {
-      const transactionsData = await getTransactions({from: 0, to: 10});
-      if (transactionsData) {
-        if(transactionsData.length === 11) setHasMore(true);
-        setTransactions(transactionsData.slice(0, 10)
-        );
+      setLoadingTransactions(true);
+      try {
+        const transactionsData = await getTransactions({ from: 0, to: 10 });
+        if (transactionsData) {
+          if (transactionsData.length === 11) setHasMore(true);
+          setTransactions(transactionsData.slice(0, 10));
+        }
+      } catch (error) {
+        console.error("Error fetching transactions", error);
+      } finally {
+        setLoadingTransactions(false);
       }
-    } catch (error) {
-      console.error("Error fetching transactions", error);
-    } finally {
-      setLoadingTransactions(false);
     }
-  }
 
     loadInitialTransactions();
   }, []);
@@ -133,7 +116,9 @@ const History = () => {
         <button className="col-start-1" onClick={onBack}>
           <ArrowLeft onClick={() => navigate("/")} />
         </button>
-        <h1 className="col-start-2 text-lg font-semibold w-full">{t("transaction.all")}</h1>
+        <h1 className="col-start-2 text-lg font-semibold w-full">
+          {t("transaction.all")}
+        </h1>
       </div>
       {sortedTransactions && transactions ? (
         <div className="flex flex-col gap-4 items-center">
@@ -194,19 +179,26 @@ const History = () => {
               ))}
             </tbody>
           </table>
-          {hasMore && <button
-            className="border border-[var(--button-border)] px-4 py-2"
-            onClick={() => {
-              const newRange = {from: range.from + step, to: range.to + step}
-              setRange(newRange);
-              loadTransactions(newRange)
-            }}
-          >
-            Load More
-          </button>}
+          {hasMore && (
+            <button
+              className="border border-[var(--button-border)] px-4 py-2"
+              onClick={() => {
+                const newRange = {
+                  from: range.from + step,
+                  to: range.to + step,
+                };
+                setRange(newRange);
+                loadTransactions(newRange);
+              }}
+            >
+              Load More
+            </button>
+          )}
         </div>
       ) : (
-        <h3 className="text-lg text-[var(--text-secondary)]">{t("transaction.emptyState.title")}</h3>
+        <h3 className="text-lg text-[var(--text-secondary)]">
+          {t("transaction.emptyState.title")}
+        </h3>
       )}
     </div>
   );

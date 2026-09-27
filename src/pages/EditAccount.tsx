@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useAsyncAction } from "../hooks/useAsyncAction";
 import { useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 import type { Currency, Account } from "../types/accounts";
 import type { AccountErrors } from "../types/errors";
@@ -11,6 +11,8 @@ import AccountForm from "../components/AccountForm";
 import InfoModal from "../components/InfoModal";
 import LoadingScreen from "../components/LoadingScreen";
 import ExecuteModal from "../components/ExecuteModal";
+
+import { useAsyncAction } from "../hooks/useAsyncAction";
 
 import {
   deleteAccount,
@@ -26,6 +28,7 @@ const EditAccount = () => {
   const { t } = useTranslation();
   const { run, state } = useAsyncAction();
   const { accountId } = useParams();
+  const queryClient = useQueryClient();
 
   const accountKey = `account-${accountId}`;
 
@@ -105,6 +108,9 @@ const EditAccount = () => {
 
     const success = await run("saving", async () => {
       await updateAccount(formattedAccount, accountId);
+      await queryClient.invalidateQueries({
+        queryKey: ["accounts"],
+      });
     });
     if (success) {
       setTimeout(() => {
@@ -119,6 +125,9 @@ const EditAccount = () => {
     setShowDeleteModal(false);
     const success = await run("deleting", async () => {
       await deleteAccount(accountId);
+      await queryClient.invalidateQueries({
+        queryKey: ["accounts"],
+      });
     });
 
     if (success) {

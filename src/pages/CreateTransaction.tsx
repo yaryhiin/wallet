@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "@tanstack/react-query";
 
 import TransactionForm from "../components/TransactionForm";
 import InfoModal from "../components/InfoModal";
@@ -8,22 +9,17 @@ import LoadingScreen from "../components/LoadingScreen";
 
 import type { TransactionErrors } from "../types/errors";
 import type { Transaction } from "../types/transactions";
-import type {
-  // Category,
-  CategoryDB,
-} from "../types/categories";
-import type { AccountDB } from "../types/accounts";
+import type { CategoryDB } from "../types/categories";
 
 import { getPersistedJSON, setPersistedJSON } from "../utils/storage";
 import { checkTransaction } from "../utils/checkData";
-import { createTransaction } from "../services/transactions";
-import {
-  // createCategory,
-  getCategories,
-} from "../services/categories";
 
+import { createTransaction } from "../services/transactions";
+import { getCategories } from "../services/categories";
+import { updateAccount } from "../services/accounts";
+
+import { useAccounts } from "../hooks/useAccounts";
 import { useAsyncAction } from "../hooks/useAsyncAction";
-import { getAccounts, updateAccount } from "../services/accounts";
 
 type CreateTransactionType = {
   type: "income" | "expense";
@@ -33,11 +29,11 @@ const CreateTransaction = ({ type }: CreateTransactionType) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { run, state } = useAsyncAction();
+  const queryClient = useQueryClient();
 
   const [loadingCategories, setLoadingCategories] = useState(true);
-  const [loadingAccounts, setLoadingAccounts] = useState(true);
+  const { data: accounts = null, isLoading: loadingAccounts } = useAccounts();
   const [categories, setCategories] = useState<CategoryDB[] | null>(null);
-  const [accounts, setAccounts] = useState<AccountDB[] | null>(null);
   const [transaction, setTransaction] = useState<Transaction>(
     getPersistedJSON("transaction", {
       account_id: "",
@@ -76,22 +72,6 @@ const CreateTransaction = ({ type }: CreateTransactionType) => {
   }, []);
 
   useEffect(() => {
-    async function loadAccounts() {
-      setLoadingAccounts(true);
-      try {
-        const accountsData = await getAccounts();
-        if (accountsData) setAccounts(accountsData);
-      } catch (error) {
-        console.error("Error fetching accounts", error);
-      } finally {
-        setLoadingAccounts(false);
-      }
-    }
-
-    loadAccounts();
-  }, []);
-
-  useEffect(() => {
     setPersistedJSON("transaction", transaction);
   }, [transaction]);
 
@@ -122,6 +102,9 @@ const CreateTransaction = ({ type }: CreateTransactionType) => {
         },
         changedAccount.id,
       );
+      await queryClient.invalidateQueries({
+        queryKey: ["accounts"],
+      });
     });
     if (success) {
       setTimeout(() => {
@@ -140,7 +123,9 @@ const CreateTransaction = ({ type }: CreateTransactionType) => {
 
   return (
     <div className="flex flex-col items-center p-5">
-      <h1 className="text-2xl font-bold mb-10">{t(`transaction.type.${type}`)}</h1>
+      <h1 className="text-2xl font-bold mb-10">
+        {t(`transaction.type.${type}`)}
+      </h1>
       <TransactionForm
         pageType="create"
         transaction={transaction}

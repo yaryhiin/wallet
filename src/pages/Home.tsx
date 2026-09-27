@@ -3,7 +3,6 @@ import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import type { AccountDB } from "../types/accounts";
 import type { TransactionDB } from "../types/transactions";
 
 import LoadingScreen from "../components/LoadingScreen";
@@ -11,16 +10,16 @@ import AccountCard from "../components/AccountCard";
 import TransactionCard from "../components/TransactionCard";
 
 import { getLatestTransactions } from "../services/transactions";
-import { getAccounts } from "../services/accounts";
+
+import { useAccounts } from "../hooks/useAccounts";
 
 const Home = () => {
   const { t } = useTranslation();
+  const { data: accounts = null, isLoading: loadingAccounts } = useAccounts();
 
-  const [accounts, setAccounts] = useState<AccountDB[] | null>(null);
   const [transactions, setTransactions] = useState<TransactionDB[] | null>(
     null,
   );
-  const [loadingAccounts, setLoadingAccounts] = useState(true);
   const [loadingTransactions, setLoadingTransactions] = useState(true);
   const totalsByCurrency = useMemo(() => {
     if (!accounts) return {};
@@ -36,22 +35,6 @@ const Home = () => {
       {} as Record<string, number>,
     );
   }, [accounts]);
-
-  useEffect(() => {
-    async function loadAccounts() {
-      setLoadingAccounts(true);
-      try {
-        const accountsData = await getAccounts();
-        if (accountsData) setAccounts(accountsData);
-      } catch (error) {
-        console.error("Error fetching accounts", error);
-      } finally {
-        setLoadingAccounts(false);
-      }
-    }
-
-    loadAccounts();
-  }, []);
 
   useEffect(() => {
     async function loadTransactions() {
