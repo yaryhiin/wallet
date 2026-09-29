@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Layout from "./components/Layout";
 import LoadingScreen from "./components/LoadingScreen";
 import WelcomeScreen from "./pages/WelcomeScreen";
+import { initializeUser } from "./services/defaults";
 
 const Home = lazy(() => import("./pages/Home"));
 const SignUp = lazy(() => import("./pages/SignUp"));
@@ -78,6 +79,12 @@ function App() {
 
     return () => subscription?.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!session?.user) return;
+
+    initializeUser(session.user.id);
+  }, [session?.user]);
 
   useEffect(() => {
     document.documentElement.setAttribute("theme", theme);
