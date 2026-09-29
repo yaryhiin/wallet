@@ -10,6 +10,7 @@ type LayoutProps = {
   theme: string;
   language: string;
   setLanguage: Dispatch<SetStateAction<string>>;
+  session: boolean;
 };
 
 export default function Layout({
@@ -17,6 +18,7 @@ export default function Layout({
   theme,
   language,
   setLanguage,
+  session,
 }: LayoutProps) {
   return (
     <>
@@ -26,6 +28,7 @@ export default function Layout({
           theme={theme}
           language={language}
           setLanguage={setLanguage}
+          session={session}
         />
 
         <main className="mb-15 w-full flex flex-col items-center p-4">

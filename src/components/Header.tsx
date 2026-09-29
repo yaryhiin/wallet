@@ -1,22 +1,35 @@
 import { useTranslation } from "react-i18next";
+import { Settings } from "lucide-react";
+import { useState } from "react";
+
 import type { Dispatch, SetStateAction } from "react";
+
+import SettingsModal from "./SettingsModal";
 
 type HeaderProps = {
   toggleTheme: () => void;
   theme: string;
   language: string;
   setLanguage: Dispatch<SetStateAction<string>>;
+  session: boolean;
 };
 
-const Header = ({ toggleTheme, theme, language, setLanguage }: HeaderProps) => {
+const Header = ({
+  toggleTheme,
+  theme,
+  language,
+  setLanguage,
+  session,
+}: HeaderProps) => {
   const { t, i18n } = useTranslation();
+
+  const [showSettings, setShowSettings] = useState(false);
 
   return (
     <header className="bg-[var(--header-bg)] border-b border-[var(--border)] w-full flex flex-row sticky top-0 z-1000 p-5 items-center justify-between">
       <div className="border bg-[var(--input-bg)] border-[var(--input-border)] px-3 py-2 flex rounded-xl ">
         <button
           onClick={toggleTheme}
-          className=""
           aria-pressed={theme === "dark"}
           aria-label="Toggle theme"
           title={theme === "dark" ? "Switch to light" : "Switch to dark"}
@@ -28,7 +41,11 @@ const Header = ({ toggleTheme, theme, language, setLanguage }: HeaderProps) => {
       </div>
 
       <h2 className="text-xl font-bold">Wallet</h2>
-      <div className="languageSelect">
+      {session ? (
+        <button onClick={() => setShowSettings(true)}>
+          <Settings size={30} />
+        </button>
+      ) : (
         <select
           value={language}
           onChange={(e) => {
@@ -41,7 +58,14 @@ const Header = ({ toggleTheme, theme, language, setLanguage }: HeaderProps) => {
           <option value="en">{t("language.en")}</option>
           <option value="pl">{t("language.pl")}</option>
         </select>
-      </div>
+      )}
+      {showSettings && (
+        <SettingsModal
+          setLanguage={setLanguage}
+          language={language}
+          onBack={() => setShowSettings(false)}
+        />
+      )}
     </header>
   );
 };

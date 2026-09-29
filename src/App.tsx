@@ -110,6 +110,7 @@ function App() {
                       theme={theme}
                       language={language}
                       setLanguage={setLanguage}
+                      session={false}
                     />
                   }
                 >
@@ -129,6 +130,7 @@ function App() {
                       theme={theme}
                       language={language}
                       setLanguage={setLanguage}
+                      session={true}
                     />
                   }
                 >
