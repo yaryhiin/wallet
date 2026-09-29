@@ -1,14 +1,19 @@
 {
+  "language": {
+    "en": "Angielski",
+    "pl": "Polski"
+  },
   "common": {
     "back": "Wstecz",
     "save": "Zapisz",
     "delete": "Usuń",
+    "edit": "Edytuj",
     "yes": "Tak",
     "add": "Dodaj"
   },
   "welcomeScreen": {
     "title": "Witamy w aplikacji Wallet",
-    "text": "Śledź wydatki, przychody, przelewy, wiele kont i walut — wszystko w jednej prostej aplikacji internetowej."
+    "desc": "Śledź wydatki, przychody, przelewy, wiele kont i walut — wszystko w jednej prostej aplikacji internetowej."
   },
   "auth": {
     "login": "Zaloguj się",
@@ -16,29 +21,52 @@
     "email": "E-mail",
     "password": "Hasło",
     "confirmPassword": "Potwierdź hasło",
-    "logout": "Wyloguj się"
+    "logout": "Wyloguj się",
+    "error": "Hasło musi mieć co najmniej 6 znaków"
   },
   "theme": {
     "dark": "Ciemny",
     "light": "Jasny"
   },
-  "modal": {
-    "category": {
-      "title": "Potwierdź działanie",
-      "text": "Czy na pewno chcesz usunąć tę kategorię? \n Tej operacji nie można cofnąć."
+  "infoModal": {
+    "save": {
+      "title": "Zapisywanie",
+      "text": "Zapisywanie zmian..."
     },
+    "delete": {
+      "title": "Usuwanie",
+      "text": "Usuwanie elementu..."
+    },
+    "success": {
+      "title": "Sukces",
+      "text": "Operacja zakończona pomyślnie"
+    },
+    "error": {
+      "title": "Błąd",
+      "text": "Coś poszło nie tak. Spróbuj ponownie."
+    },
+    "info": {
+      "title": "Informacja",
+      "text": "Oto coś, o czym warto wiedzieć."
+    }
+  },
+  "execute": {
+    "title": "Potwierdź działanie"
+  },
+  "modal": {
+    "category": "Czy na pewno chcesz usunąć tę kategorię?\nTej operacji nie można cofnąć.",
     "transfer": {
       "title": "Uwaga!",
-      "text": "Aby wykonać przelew, potrzebujesz co najmniej dwóch kont.\n Czy chcesz teraz dodać konto?"
+      "text": "Aby wykonać przelew, potrzebujesz co najmniej dwóch kont.\nCzy chcesz teraz dodać konto?"
     },
     "account": {
-      "title": "Potwierdź działanie",
       "part1": "To konto ma",
-      "part2": ". \n Czy na pewno chcesz je usunąć?"
+      "part2": ".\nCzy na pewno chcesz je usunąć?"
     },
+    "transaction": "Czy na pewno chcesz usunąć tę transakcję?",
     "created": {
       "title": "Konto utworzone",
-      "text": "Sprawdź swoją skrzynkę e-mail i kliknij link potwierdzający. \n Jeśli masz już konto, spróbuj się zalogować."
+      "text": "Sprawdź swoją skrzynkę e-mail i kliknij link potwierdzający.\nJeśli masz już konto, spróbuj się zalogować."
     }
   },
   "account": {
@@ -49,11 +77,11 @@
     "changeAcc": "Edytuj konto",
     "name": {
       "title": "Nazwa konta",
-      "placeHolder": "Wpisz nazwę"
+      "placeHolder": "Wprowadź nazwę"
     },
     "bal": {
       "title": "Saldo",
-      "placeHolder": "Wpisz saldo"
+      "placeHolder": "Wprowadź saldo"
     },
     "cur": "Waluta",
     "selectCur": "Wybierz walutę",
@@ -66,7 +94,7 @@
     "addTrans": "Dodaj transakcję",
     "changeTrans": "Edytuj transakcję",
     "all": "Wszystkie transakcje",
-    "viewAll": "Zobacz wszystkie transakcje",
+    "viewAll": "Zobacz wszystkie",
     "addNewCategory": {
       "title": "Dodaj nową kategorię",
       "placeHolder": "Nazwa kategorii"
@@ -78,25 +106,26 @@
     },
     "amount": {
       "title": "Kwota",
-      "placeHolder": "Wpisz kwotę"
+      "placeHolder": "Wprowadź kwotę"
     },
     "from": "Z",
     "to": "Do",
     "rate": {
       "title": "Kurs wymiany",
-      "placeHolder": "Wpisz kurs wymiany"
+      "placeHolder": "Wprowadź kurs wymiany"
     },
     "type": {
       "title": "Typ",
       "income": "Przychód",
-      "expense": "Wydatek"
+      "expense": "Wydatek",
+      "select": "Wybierz typ",
+      "transfer": "Przelew"
     },
     "category": "Kategoria",
     "selectCategory": "Wybierz kategorię",
     "method": "Metoda",
     "selectMethod": "Wybierz metodę",
-    "date": "Data",
-    "loading": "Ładowanie transakcji..."
+    "date": "Data"
   },
   "icons": {
     "card_blue": "Niebieska karta",

@@ -285,7 +285,7 @@ const TransactionForm = ({
       )}
       {showDeleteModal && (
         <ExecuteModal
-          text={t("modal.delete.category")}
+          text={t("modal.category")}
           onClose={() => setShowDeleteModal(false)}
           onDelete={handleDeleteCategory}
         />
