@@ -70,7 +70,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="grid w-fit grid-cols-2 gap-4 p-4">
+      <div className="grid w-fit grid-cols-2 gap-4 p-4 max-[450px]:px-1">
         {accounts &&
           accounts.map((acc) => <AccountCard key={acc.id} account={acc} />)}
         {((accounts && accounts.length < 4) || !accounts) && (
@@ -111,25 +111,25 @@ const Home = () => {
           </p>
         </div>
       )}
-      <div className="flex flex-row gap-7">
+      <div className="flex flex-row gap-7 max-[450px]:gap-3">
         <Link
           to="/transaction/new/income"
           aria-label="Create new income"
-          className="border border-[var(--save-btn-bg)] bg-[var(--back-btn-bg)] rounded-lg px-4 py-3"
+          className="w-fit h-fit border border-[var(--save-btn-bg)] bg-[var(--back-btn-bg)] rounded-lg px-4 py-3 max-[450px]:text-sm max-[450px]:px-3 max-[450px]:py-3"
         >
           + {t("transaction.type.income")}
         </Link>
         <Link
           to="/transaction/new/expense"
           aria-label="Create new expense"
-          className="border border-[var(--delete-btn-bg)] bg-[var(--back-btn-bg)] rounded-lg px-4 py-3"
+          className="w-fit h-fit border border-[var(--delete-btn-bg)] bg-[var(--back-btn-bg)] rounded-lg px-4 py-3 max-[450px]:text-sm max-[450px]:px-3 max-[450px]:py-3"
         >
           - {t("transaction.type.expense")}
         </Link>
         <Link
           to="/transaction/new/transfer"
           aria-label="Create new transfer"
-          className="border border-[var(--transfer-btn-bg)] bg-[var(--back-btn-bg)] rounded-lg px-4 py-3"
+          className="w-fit h-fit border border-[var(--transfer-btn-bg)] bg-[var(--back-btn-bg)] rounded-lg px-4 py-3 max-[450px]:text-sm max-[450px]:px-3 max-[450px]:py-3"
         >
           ⇄ {t("transaction.type.transfer")}
         </Link>

@@ -36,7 +36,7 @@ const TransactionCard = ({ transaction, accounts }: TransactionCardProps) => {
           </span>
           {transaction.currency}
         </div>
-        <p className="text-[var(--text-muted)]">
+        <p className="text-[var(--text-muted)] text-end">
           {getFormattedLocalDateTime(transaction.date)}
         </p>
       </div>

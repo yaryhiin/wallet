@@ -1,10 +1,51 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>wallet-v2</title>
+    <meta charset="utf-8" />
+    <link rel="icon" href="https://wallet.yaryhin.com/favicon.ico" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <meta name="theme-color" content="#000000" />
+
+    <title>Wallet App – Track Expenses, Income & Accounts</title>
+
+    <meta
+      name="description"
+      content="A React and Supabase wallet tracker for managing accounts, transactions, transfers, custom categories, and multi-currency balances."
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Wallet App – Track Your Money" />
+    <meta
+      property="og:description"
+      content="A React and Supabase wallet tracker for managing accounts, transactions, transfers, custom categories, and multi-currency balances."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="wallet.yaryhin.com" />
+    <meta
+      property="og:image"
+      content="https://wallet.yaryhin.com/preview.png"
+    />
+
+    <meta name="robots" content="index, follow" />
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-0VTKET11E3"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-0VTKET11E3");
+    </script>
   </head>
   <body>
     <div id="root"></div>
