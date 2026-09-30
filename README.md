@@ -12,15 +12,17 @@ Wallet allows users to manage multiple accounts, track income and expenses, tran
 
 ### Dashboard
 
-<img width="280" alt="Wallet Dashboard" src="https://github.com/user-attachments/assets/ac33f586-60d0-4bb4-9b6d-af68588eb054" />
+<img width="280" alt="Wallet Dashboard" src="https://github.com/user-attachments/assets/9ec89a3b-5375-4e1b-8ffa-14c94701a9ac" />
+
 
 ### Transactions
 
-<img width="280" alt="Wallet Transaction History" src="https://github.com/user-attachments/assets/db10f6ea-42ff-4bb1-a1ce-d3e084d71dd1" />
+<img width="280" alt="Wallet Transaction History" src="https://github.com/user-attachments/assets/95a9f68a-113d-45b2-8e73-a670d0e03e8e" />
 
 ### Transfer
 
-<img width="280" alt="Wallet Transfer" src="https://github.com/user-attachments/assets/317bbde4-91c6-4126-a5bb-e66c5e6a9c90" />
+<img width="280" alt="Wallet Transfer" src="https://github.com/user-attachments/assets/d079bd23-dac1-4fee-8189-4ab825fa405c" />
+
 
 ## Features
 
