@@ -122,7 +122,7 @@ const History = () => {
         />
       </div>
       {accounts && sortedTransactions ? (
-        <div className="flex flex-col gap-4 items-center">
+        <div className="flex flex-col gap-4 items-center w-[90%]">
           {sortedTransactions.map((transaction) => (
             <TransactionCard
               key={transaction.id}
