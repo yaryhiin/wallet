@@ -64,8 +64,8 @@ const History = () => {
         aValue = new Date(a.date);
         bValue = new Date(b.date);
       } else if (key === "amount") {
-        aValue = Number(a.amount);
-        bValue = Number(b.amount);
+        aValue = a.type === "income" ? Number(a.amount) : Number(a.amount) * -1;
+        bValue = b.type === "income" ? Number(b.amount) : Number(b.amount) * -1;
       } else if (key === "account_id") {
         aValue =
           accounts.find((acc) => String(acc.id) === String(a.account_id))
