@@ -1,17 +1,19 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowUpDown } from "lucide-react";
 
 import type { TransactionDB, Range, SortConfig } from "../types/transactions";
 
 import LoadingScreen from "../components/LoadingScreen";
 
-import { formatDate } from "../utils/utils";
+// import { formatDate } from "../utils/utils";
 
 import { getTransactions } from "../services/transactions";
 
 import { useAccounts } from "../hooks/useAccounts";
+import TransactionCard from "../components/TransactionCard";
+import SortModal from "../components/SortModal";
 
 const step = 10;
 
@@ -29,7 +31,7 @@ const History = () => {
     direction: "desc",
   });
   const [hasMore, setHasMore] = useState(false);
-  const arrow = sortConfig.direction === "asc" ? "▴" : "▾";
+  const [showSortModal, setShowSortModal] = useState(false);
   const [loadingTransactions, setLoadingTransactions] = useState(true);
 
   useEffect(() => {
@@ -97,13 +99,6 @@ const History = () => {
     }
   }
 
-  function handleSort(key: keyof TransactionDB) {
-    setSortConfig((prev) => ({
-      key,
-      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
-    }));
-  }
-
   function onBack() {
     navigate("/");
   }
@@ -119,66 +114,22 @@ const History = () => {
         <h1 className="col-start-2 text-lg font-semibold w-full">
           {t("transaction.all")}
         </h1>
+        <ArrowUpDown
+          onClick={() => {
+            setShowSortModal(true);
+          }}
+          className="col-start-3 flex justify-self-end"
+        />
       </div>
-      {sortedTransactions && transactions ? (
+      {accounts && sortedTransactions ? (
         <div className="flex flex-col gap-4 items-center">
-          <table className="border border-[var(--input-border)] ">
-            <thead>
-              <tr className="border-b-3 border-[var(--input-border)]">
-                <th onClick={() => handleSort("category")}>
-                  {t("transaction.category")}
-                  {sortConfig.key === "category" && arrow}
-                </th>
-                <th onClick={() => handleSort("amount")}>
-                  {t("transaction.amount.title")}
-                  {sortConfig.key === "amount" && arrow}
-                </th>
-                <th onClick={() => handleSort("currency")}>
-                  {t("transaction.cur")}
-                  {sortConfig.key === "currency" && arrow}
-                </th>
-                <th onClick={() => handleSort("account_id")}>
-                  {t("transaction.method")}
-                  {sortConfig.key === "account_id" && arrow}
-                </th>
-                <th onClick={() => handleSort("date")}>
-                  {t("transaction.date")}
-                  {sortConfig.key === "date" && arrow}
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {sortedTransactions.map((transaction) => (
-                <tr
-                  key={transaction.id}
-                  className="border border-[var(--input-border)]"
-                  onClick={() =>
-                    navigate(`/transaction/edit/${transaction.id}`, {
-                      state: { from: "/transactions" },
-                    })
-                  }
-                >
-                  <td className="">{transaction.category}</td>
-                  {transaction.type === "income" ? (
-                    <td className="">{transaction.amount}</td>
-                  ) : (
-                    <td className="">-{transaction.amount}</td>
-                  )}
-                  <td className="">{transaction.currency}</td>
-                  <td>
-                    {(accounts &&
-                      accounts.find(
-                        (account) =>
-                          String(account.id) === String(transaction.account_id),
-                      )?.name) ||
-                      "Unknown Account"}
-                  </td>
-                  <td>{formatDate(transaction.date)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {sortedTransactions.map((transaction) => (
+            <TransactionCard
+              key={transaction.id}
+              transaction={transaction}
+              accounts={accounts}
+            />
+          ))}
           {hasMore && (
             <button
               className="border border-[var(--button-border)] px-4 py-2"
@@ -199,6 +150,13 @@ const History = () => {
         <h3 className="text-lg text-[var(--text-secondary)]">
           {t("transaction.emptyState.title")}
         </h3>
+      )}
+      {showSortModal && (
+        <SortModal
+          onBack={() => setShowSortModal(false)}
+          sortConfig={sortConfig}
+          setSortConfig={setSortConfig}
+        />
       )}
     </div>
   );
