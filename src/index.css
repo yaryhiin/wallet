@@ -31,7 +31,8 @@ select {
   margin-top: 5px;
 }
 
-td, th {
+td,
+th {
   padding: 8px 6px;
   font-size: 14px;
   text-align: center;
@@ -43,25 +44,28 @@ td, th {
 }
 
 :root {
-  --text: #262626;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --font: "Inter, Roboto";
-  --bg: #f5f5f7;
-  --border: black;
-  --header-bg: #ececf1;
-  --card-bg: #ffffff;
-  --card-border: #d9d9e0;
-  --btn-bg: #f0f0f0;
-  --btn-hover-bg: #e5e5e5;
+  --border: gray;
+  --text: #2c2926;
+  --text-secondary: #8a8178;
+  --text-muted: #6f6861;
 
-  --input-bg: #ffffff;
-  --input-border: #d0d0d0;
-  --input-text: #1e1e1e;
-  --subtle-text: #555;
+  --bg: #f5f2ee;
+  --header-bg: #ede9e4;
 
-  --back-btn-bg: #e9e9e9;
-  --back-btn-hover-bg: #dcdcdc;
+  --card-bg: #faf8f5;
+  --card-border: #ddd7d0;
+
+  --btn-bg: #ebe6e0;
+  --btn-hover-bg: #dfd8d0;
+
+  --input-bg: #faf8f5;
+  --input-border: #d4cec7;
+  --input-text: #2c2926;
+
+  --subtle-text: #625c56;
+
+  --back-btn-bg: #e9e4de;
+  --back-btn-hover-bg: #ddd6ce;
 
   /* Buttons */
   --save-btn-bg: #22c55e;
@@ -76,6 +80,7 @@ td, th {
 }
 
 [theme="dark"] {
+  --border: black;
   --text: #dbdbdb;
   --text-secondary: #475569;
   --text-muted: #94a3b8;
