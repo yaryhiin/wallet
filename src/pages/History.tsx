@@ -7,8 +7,6 @@ import type { TransactionDB, Range, SortConfig } from "../types/transactions";
 
 import LoadingScreen from "../components/LoadingScreen";
 
-// import { formatDate } from "../utils/utils";
-
 import { getTransactions } from "../services/transactions";
 
 import { useAccounts } from "../hooks/useAccounts";
