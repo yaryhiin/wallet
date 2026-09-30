@@ -70,17 +70,22 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="grid w-fit grid-cols-2 gap-4 p-4 max-[450px]:px-1">
-        {accounts &&
-          accounts.map((acc) => <AccountCard key={acc.id} account={acc} />)}
-        {((accounts && accounts.length < 4) || !accounts) && (
-          <Link
-            to="/account/new"
-            aria-label="Create new account"
-            className="flex w-35 h-35 p-2 border border-[var(--card-border)] rounded-md bg-[var(--card-bg)] text-[var(--text)] items-center justify-center"
-          >
-            <Plus size={60} />
-          </Link>
+      <div>
+        <div className="grid w-fit grid-cols-2 gap-4 p-4 max-[450px]:px-1">
+          {accounts &&
+            accounts.map((acc) => <AccountCard key={acc.id} account={acc} />)}
+          {((accounts && accounts.length < 4) || !accounts) && (
+            <Link
+              to="/account/new"
+              aria-label="Create new account"
+              className="flex w-35 h-35 p-2 border border-[var(--card-border)] rounded-md bg-[var(--card-bg)] text-[var(--text)] items-center justify-center"
+            >
+              <Plus size={60} />
+            </Link>
+          )}
+        </div>
+        {accounts && accounts.length === 4 && (
+          <p className="text-center mb-3">{t("account.accLimit")}</p>
         )}
       </div>
       {transactions ? (
